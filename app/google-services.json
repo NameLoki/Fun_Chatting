@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1062481190379",
+    "firebase_url": "https://realchatting-df4c2.firebaseio.com",
+    "project_id": "realchatting-df4c2",
+    "storage_bucket": "realchatting-df4c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062481190379:android:ac92afaf23d6c595d58dae",
+        "android_client_info": {
+          "package_name": "com.dgsw.realnamechatting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062481190379-1musjcgdlvq7acbj4blp078eog4moc9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_UON8Kc3RgbnmwiwY0JqEIPoGjuvY7t4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062481190379-1musjcgdlvq7acbj4blp078eog4moc9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
