@@ -1,14 +1,16 @@
-package com.dgsw.realnamechatting;
+package com.dgsw.realnamechatting.singup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SingupStartActivity extends AppCompatActivity {
+import com.dgsw.realnamechatting.R;
+
+public class SingupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_singup_start);
+        setContentView(R.layout.activity_singup);
     }
 }
