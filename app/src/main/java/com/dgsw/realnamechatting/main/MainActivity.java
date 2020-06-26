@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.dgsw.realnamechatting.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        FirebaseAuth.getInstance().signOut();
+    }
 }

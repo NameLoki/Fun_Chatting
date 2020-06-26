@@ -1,5 +1,6 @@
 package com.dgsw.realnamechatting.main.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.dgsw.realnamechatting.databinding.FragmentFriendBinding;
 import com.dgsw.realnamechatting.databinding.FragmentSettingBinding;
+import com.dgsw.realnamechatting.login.LoginActivity;
 import com.dgsw.realnamechatting.main.MainViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingFragment extends Fragment {
 
@@ -25,14 +28,21 @@ public class SettingFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         binding = FragmentSettingBinding.inflate(inflater);
 
-        final TextView textView = binding.textHome;
-
-        mainViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.buttonLogout.setOnClickListener(v -> {
+            logout();
+        });
+    }
+
+    private void logout() {
+        mainViewModel.getFirebaseManager().logout();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }
