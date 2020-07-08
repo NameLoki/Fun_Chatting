@@ -69,6 +69,10 @@ public class SingupActivity extends AppCompatActivity {
         phone = binding.editTextPhone;
         singup = binding.buttonSingup;
 
+        setting();
+    }
+
+    private void setting() {
         phoneSetting();
         buttonSetting();
     }
@@ -104,7 +108,7 @@ public class SingupActivity extends AppCompatActivity {
 
                                 user.setUid(firebaseAuth.getCurrentUser().getUid());
 
-                                myRef.child("/info").push().setValue(user);
+                                myRef.child("/info").setValue(user);
 
                                 Intent intent = new Intent(SingupActivity.this, MainActivity.class);
                                 startActivity(intent);
@@ -125,7 +129,6 @@ public class SingupActivity extends AppCompatActivity {
     private void phoneSetting() {
         phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
-
 
     private void isEmail() {
         if(email.getText().toString().isEmpty()) {

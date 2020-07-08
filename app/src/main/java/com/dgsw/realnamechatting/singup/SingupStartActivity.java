@@ -7,15 +7,20 @@ import android.os.Bundle;
 
 import com.dgsw.realnamechatting.R;
 import com.dgsw.realnamechatting.databinding.ActivitySingupStartBinding;
+import com.dgsw.realnamechatting.manager.ActivityLoadManager;
 
 public class SingupStartActivity extends AppCompatActivity {
 
-    ActivitySingupStartBinding binding;
+    private ActivitySingupStartBinding binding;
+    private ActivityLoadManager activityLoadManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySingupStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        activityLoadManager = ActivityLoadManager.getInstance();
 
         binding.buttonSingup.setOnClickListener(v -> {
             singupInit();
@@ -24,8 +29,6 @@ public class SingupStartActivity extends AppCompatActivity {
     }
 
     private void singupInit() {
-        Intent intent = new Intent(this, SingupActivity.class);
-        startActivity(intent);
-        finish();
+        activityLoadManager.loadSingup(this);
     }
 }

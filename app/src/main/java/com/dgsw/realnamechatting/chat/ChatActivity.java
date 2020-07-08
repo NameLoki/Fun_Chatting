@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private List<Chatting> chattings;
 
-    private long roomId = 1;
+    private String roomId;
 
     private User user;
     private FirebaseUser firebaseUser;
@@ -59,7 +60,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private void init() {
 
-        user = MainViewModel.getUser().getValue();
+//        user = MainViewModel.getUser().getValue();
+
+        this.roomId = getIntent().getStringExtra("id");
         chattings = new ArrayList<>();
 
         adapter = new ChatAdapter(chattings, null);
@@ -80,7 +83,8 @@ public class ChatActivity extends AppCompatActivity {
             if(!msg.isEmpty()) {
                 Chatting chatting = new Chatting();
                 chatting.setMessage(msg);
-                chatting.setUid(user.getUid());
+                chatting.setUid(firebaseUser.getUid());
+//                roomRef.child(LocalDateTime.now().toString()).setValue(chatting);
                 roomRef.push().setValue(chatting);
                 binding.chatEditTextMessage.setText("");
             }

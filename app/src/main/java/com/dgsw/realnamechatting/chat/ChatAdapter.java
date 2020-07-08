@@ -3,6 +3,7 @@ package com.dgsw.realnamechatting.chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private List<Chatting> chattings;
-
 
     private User user;
     private OnClickChatListener listener;

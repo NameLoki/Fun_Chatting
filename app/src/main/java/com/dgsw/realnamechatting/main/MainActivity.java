@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
-
     }
 
     @Override

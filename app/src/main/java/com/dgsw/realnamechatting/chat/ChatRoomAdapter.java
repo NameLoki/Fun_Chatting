@@ -18,9 +18,11 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
     private OnClickRoomListener listener;
     private List<ChatRoom> rooms;
 
-    public ChatRoomAdapter(OnClickRoomListener listener) {
+    public ChatRoomAdapter(List<ChatRoom> rooms, OnClickRoomListener listener) {
+        this.rooms = rooms;
         this.listener = listener;
     }
+
 
     @NonNull
     @Override
@@ -35,12 +37,12 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
 
         String names = null;
 
-        for(String name : room.getUsers()) {
-            names += name + ", ";
-        }
+//        for(String name : room.getUsers()) {
+//            names += name + ", ";
+//        }
 
-        holder.name.setText(names);
-        holder.lastChat.setText(room.getLastChat());
+        holder.name.setText(room.getId());
+//        holder.lastChat.setText(room.getLastChat());
 
         holder.itemView.setOnClickListener(v -> {
             listener.onItemClick(room);

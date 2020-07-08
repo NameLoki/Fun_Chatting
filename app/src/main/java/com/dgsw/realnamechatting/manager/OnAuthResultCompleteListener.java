@@ -1,4 +1,4 @@
-package com.dgsw.realnamechatting.firbase;
+package com.dgsw.realnamechatting.manager;
 
 import androidx.annotation.NonNull;
 

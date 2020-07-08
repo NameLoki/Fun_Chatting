@@ -1,15 +1,19 @@
 package com.dgsw.realnamechatting.data;
 
 public class ChatRoom {
-    private long id;
+    private String id;
     private String[] users;
     private String lastChat;
 
-    public long getId() {
+    public ChatRoom(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

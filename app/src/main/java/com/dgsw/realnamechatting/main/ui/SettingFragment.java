@@ -40,9 +40,6 @@ public class SettingFragment extends Fragment {
     }
 
     private void logout() {
-        mainViewModel.getFirebaseManager().logout();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        mainViewModel.getActivityLoadManager().logout(getActivity());
     }
 }

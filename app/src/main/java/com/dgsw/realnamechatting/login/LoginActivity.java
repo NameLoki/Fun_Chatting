@@ -1,28 +1,24 @@
 package com.dgsw.realnamechatting.login;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.dgsw.realnamechatting.R;
-import com.dgsw.realnamechatting.chat.ChatActivity;
 import com.dgsw.realnamechatting.databinding.ActivityLoginBinding;
-import com.dgsw.realnamechatting.firbase.FirebaseManager;
+import com.dgsw.realnamechatting.manager.ActivityLoadManager;
+import com.dgsw.realnamechatting.manager.FirebaseManager;
 import com.dgsw.realnamechatting.main.MainActivity;
 import com.dgsw.realnamechatting.singup.SingupStartActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ActivityLoginBinding binding;
-    FirebaseManager firebaseManager = FirebaseManager.getInstance();
+    private ActivityLoginBinding binding;
+    private FirebaseManager firebaseManager;
+
+    private ActivityLoadManager activityLoadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +28,18 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        setting();
+
         autoLogin();
 
         init();
     }
+
+    private void setting() {
+        activityLoadManager = ActivityLoadManager.getInstance();
+        firebaseManager = FirebaseManager.getInstance();
+    }
+
 
     private void autoLogin() {
         if(loginCheck()) {
@@ -53,12 +57,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loadMainActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-        finish();
+        activityLoadManager.loadMainActivity(this);
     }
-
 
     private void init() {
 
