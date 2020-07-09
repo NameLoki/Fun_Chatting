@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dgsw.realnamechatting.R;
 import com.dgsw.realnamechatting.data.Chatting;
 import com.dgsw.realnamechatting.data.User;
+import com.dgsw.realnamechatting.manager.FirebaseManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,8 +48,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chatting chatting = chattings.get(position);
 
+        if(chatting.getUid().equals(FirebaseManager.getInstance().getLoginUser().getUid())) {
+            setChatTextAlignment(holder, View.TEXT_ALIGNMENT_VIEW_END);
+        }
+
         holder.name.setText(chatting.getUid());
         holder.msg.setText(chatting.getMessage());
+    }
+
+    private void setChatTextAlignment(ChatViewHolder holder, int textAlignment) {
+        holder.name.setTextAlignment(textAlignment);
+        holder.msg.setTextAlignment(textAlignment);
     }
 
     @Override

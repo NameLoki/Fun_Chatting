@@ -2,11 +2,13 @@ package com.dgsw.realnamechatting.data;
 
 public class ChatRoom {
     private String id;
+    private String name;
     private String[] users;
     private String lastChat;
 
-    public ChatRoom(String id) {
+    public ChatRoom(String id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public String getId() {
@@ -31,5 +33,13 @@ public class ChatRoom {
 
     public void setLastChat(String lastChat) {
         this.lastChat = lastChat;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

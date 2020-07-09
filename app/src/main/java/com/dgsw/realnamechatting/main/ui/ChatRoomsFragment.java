@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,9 +16,8 @@ import com.dgsw.realnamechatting.chat.ChatActivity;
 import com.dgsw.realnamechatting.chat.ChatRoomAdapter;
 import com.dgsw.realnamechatting.data.ChatRoom;
 import com.dgsw.realnamechatting.databinding.FragmentChatroomsBinding;
-import com.dgsw.realnamechatting.databinding.FragmentFriendBinding;
-import com.dgsw.realnamechatting.main.MainActivity;
 import com.dgsw.realnamechatting.main.MainViewModel;
+import com.dgsw.realnamechatting.data.OnValueChangedCallBack;
 
 public class ChatRoomsFragment extends Fragment {
 
@@ -47,8 +44,13 @@ public class ChatRoomsFragment extends Fragment {
         });
         binding.recyclerViewRooms.setAdapter(adapter);
         binding.recyclerViewRooms.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
 
     }
+
+    private OnValueChangedCallBack onValueChangedCallBack = () -> {
+        adapter.notifyDataSetChanged();
+    };
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);

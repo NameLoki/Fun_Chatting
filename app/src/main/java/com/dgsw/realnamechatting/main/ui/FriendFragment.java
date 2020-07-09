@@ -2,21 +2,18 @@ package com.dgsw.realnamechatting.main.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.dgsw.realnamechatting.R;
@@ -25,14 +22,13 @@ import com.dgsw.realnamechatting.databinding.FragmentFriendBinding;
 import com.dgsw.realnamechatting.friend.FindUserActivity;
 import com.dgsw.realnamechatting.friend.FriendListAdapter;
 import com.dgsw.realnamechatting.main.MainViewModel;
+import com.dgsw.realnamechatting.data.OnValueChangedCallBack;
 import com.dgsw.realnamechatting.manager.FirebaseManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 public class FriendFragment extends Fragment {
 
@@ -46,6 +42,37 @@ public class FriendFragment extends Fragment {
         binding = FragmentFriendBinding.inflate(inflater);
 
         setHasOptionsMenu(true);
+
+        mainViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                binding.textHome.setText(user.getName());
+            }
+        });
+        mainViewModel.getFriendCount().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        adapter = new FriendListAdapter(mainViewModel.getFriends(), new FriendListAdapter.OnClickFriendListener() {
+            @Override
+            public void onFriendClick(User user) {
+                FirebaseManager firebaseManager = mainViewModel.getFirebaseManager();
+
+                DatabaseReference chatRef =  firebaseManager.getDBReference("rooms");
+                String key = chatRef.push().getKey().toString();
+                DatabaseReference myRef = firebaseManager.getDBReference("users/" + mainViewModel.getUser().getValue().getUid() + "/rooms/" + key);
+                myRef.setValue("sole");
+                DatabaseReference friendRef = firebaseManager.getDBReference("users/" + user.getUid() + "/rooms/" + key);
+                friendRef.setValue("sole");
+            }
+        });
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
 
         return binding.getRoot();
     }
@@ -70,76 +97,9 @@ public class FriendFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                binding.textHome.setText(user.getName());
-            }
-        });
-        mainViewModel.getFriendCount().observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-
-                adapter = new FriendListAdapter(mainViewModel.getFriends(), new FriendListAdapter.OnClickFriendListener() {
-                    @Override
-                    public void onFriendClick(User user) {
-                        FirebaseManager firebaseManager = mainViewModel.getFirebaseManager();
-
-                        DatabaseReference chatRef =  firebaseManager.getDBReference("rooms");
-                        String key = chatRef.push().getKey().toString();
-                        DatabaseReference myRef = firebaseManager.getDBReference("users/" + mainViewModel.getUser().getValue().getUid() + "/rooms/" + key);
-                        myRef.setValue("sole");
-                        DatabaseReference friendRef = firebaseManager.getDBReference("users/" + user.getUid() + "/rooms/" + key);
-                        friendRef.setValue("sole");
-                    }
-                });
-
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void loadFriend() {
-        FirebaseManager firebaseManager = mainViewModel.getFirebaseManager();
-
-        firebaseManager.getDBReference("users/" + firebaseManager.getLoginUser().getUid() + "/friends").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                firebaseManager.getDBReference("users/" + dataSnapshot.getValue() + "/info").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User temp = dataSnapshot.getValue(User.class);
-                        adapter.addFriend(temp);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+    private OnValueChangedCallBack onValueChangedCallBack = () -> {
+        adapter.notifyDataSetChanged();
+    };
 }

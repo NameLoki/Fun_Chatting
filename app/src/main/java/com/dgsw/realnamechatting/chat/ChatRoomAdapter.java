@@ -41,7 +41,8 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
 //            names += name + ", ";
 //        }
 
-        holder.name.setText(room.getId());
+        holder.name.setText(room.getName());
+        holder.lastChat.setText(room.getId());
 //        holder.lastChat.setText(room.getLastChat());
 
         holder.itemView.setOnClickListener(v -> {
