@@ -89,46 +89,21 @@ public class FirebaseManager {
         })));
     }
 
-    public User getEmailSeachUsers(String email) {
-
-        List<User> users = new ArrayList<>();
-        User user;
+    public void loadEmailSeachUsers(String email, List<User> users, OnFindUserCallBack onFindUserCallBack) {
 
         DatabaseReference ref = getDBReference("users");
 
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    firebaseDatabase.getReference("users/" + snapshot.getKey() + "/info").orderByChild("email").equalTo(email).addChildEventListener(new ChildEventListener() {
-                    firebaseDatabase.getReference("users/" + snapshot.getKey() + "/info").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Log.d("이자시가", dataSnapshot.toString());
-                            User user = dataSnapshot.getValue(User.class);
-                            if(user.getEmail().equals(email)) {
-                                users.add(user);
-                            }
-//                            User user = new User();
-//                            user.setEmail(s);
-//                            users.add(user);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
+        ref.addValueEventListener(new OnValueEventImplListener(dataSnapshot -> {
+            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                firebaseDatabase.getReference("users/" + snapshot.getKey() + "/info").addValueEventListener(new OnValueEventImplListener(dSnapshot -> {
+                    User user = dSnapshot.getValue(User.class);
+                    if(user.getEmail().equals(email)) {
+                        users.add(user);
+                        onFindUserCallBack.onFindUserCallBack(user);
+                    }
+                }));
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return users.get(0);
+        }));
     }
 
     public FirebaseDatabase getFirebaseDatabase() {

@@ -1,8 +1,11 @@
 package com.dgsw.realnamechatting.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.time.LocalDateTime;
 
-public class User {
+public class User implements Parcelable {
     private String uid;
     private String email;
     private String password;
@@ -12,6 +15,29 @@ public class User {
 //    private String profileImgUrl;
 //    private LocalDateTime createDate;
     private String profileMessage;
+
+    protected User(Parcel in) {
+        uid = in.readString();
+        email = in.readString();
+        password = in.readString();
+        name = in.readString();
+        phone = in.readString();
+        profileMessage = in.readString();
+    }
+
+    public User() { }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getUid() {
         return uid;
@@ -83,5 +109,20 @@ public class User {
 
     public void setProfileMessage(String profileMessage) {
         this.profileMessage = profileMessage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(profileMessage);
     }
 }

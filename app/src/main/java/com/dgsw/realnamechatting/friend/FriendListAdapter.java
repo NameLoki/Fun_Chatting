@@ -45,9 +45,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         User user = friends.get(position);
         holder.name.setText(user.getName());
         holder.email.setText(user.getEmail());
-        holder.button.setOnClickListener(v -> {
-            this.onClickFriendListener.onFriendClick(user);
-        });
+//        holder.button.setOnClickListener(v -> {
+//            this.onClickFriendListener.onFriendClick(user);
+//        });
     }
 
     @Override
@@ -64,7 +64,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             super(itemView);
             name = itemView.findViewById(R.id.friend_textViewName);
             email = itemView.findViewById((R.id.friend_textViewEmail));
-            button = itemView.findViewById(R.id.friend_buttonChat);
+//            button = itemView.findViewById(R.id.friend_buttonChat);
 
         }
     }

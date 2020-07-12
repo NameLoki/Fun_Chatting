@@ -14,6 +14,7 @@ import com.dgsw.realnamechatting.data.User;
 import com.dgsw.realnamechatting.databinding.ActivityFindUserBinding;
 import com.dgsw.realnamechatting.login.LoginActivity;
 import com.dgsw.realnamechatting.manager.FirebaseManager;
+import com.dgsw.realnamechatting.manager.OnFindUserCallBack;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +42,12 @@ public class FindUserActivity extends AppCompatActivity {
         binding.imageButtonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUser(binding.editTextSearch.getText().toString());
+                findUser(binding.editTextSearch.getText().toString(), findUsers, new OnFindUserCallBack() {
+                    @Override
+                    public void onFindUserCallBack(User user) {
+                        findUserSetting(user);
+                    }
+                });
             }
         });
 
@@ -53,6 +59,14 @@ public class FindUserActivity extends AppCompatActivity {
         firebaseManager = FirebaseManager.getInstance();
     }
 
+    private void findUser(String email, List<User> users, OnFindUserCallBack onFindUserCallBack) {
+        firebaseManager.loadEmailSeachUsers(email, users, onFindUserCallBack);
+    }
+
+    /**
+     * 사용안하는 함수
+     * @param email
+     */
     private void findUser(String email) {
         DatabaseReference ref = firebaseManager.getDBReference("users");
 

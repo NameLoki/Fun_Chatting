@@ -3,34 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_friend_black">
     <TextView
+        style="@style/FriendNameText"
         android:id="@+id/friend_textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="TextView"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/friend_textViewEmail"
+        style="@style/FriendMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/friend_textViewName"
-        app:layout_constraintStart_toEndOf="@+id/friend_textViewName"
-        app:layout_constraintTop_toTopOf="@+id/friend_textViewName" />
-
-    <Button
-        android:id="@+id/friend_buttonChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/friend_textViewName"
-        app:layout_constraintStart_toEndOf="@+id/friend_textViewEmail"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/friend_textViewName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,11 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.dgsw.realnamechatting.chat.ChatActivity;
+import com.dgsw.realnamechatting.chat.ChatCreateRoomActivity;
 import com.dgsw.realnamechatting.chat.ChatRoomAdapter;
 import com.dgsw.realnamechatting.data.ChatRoom;
 import com.dgsw.realnamechatting.databinding.FragmentChatroomsBinding;
 import com.dgsw.realnamechatting.main.MainViewModel;
 import com.dgsw.realnamechatting.data.OnValueChangedCallBack;
+
+import java.util.ArrayList;
 
 public class ChatRoomsFragment extends Fragment {
 
@@ -28,6 +31,17 @@ public class ChatRoomsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
+    }
+
+    private OnValueChangedCallBack onValueChangedCallBack = () -> {
+        adapter.notifyDataSetChanged();
+    };
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        binding = FragmentChatroomsBinding.inflate(inflater);
 
         adapter = new ChatRoomAdapter(mainViewModel.getRooms(), new ChatRoomAdapter.OnClickRoomListener() {
             @Override
@@ -44,18 +58,13 @@ public class ChatRoomsFragment extends Fragment {
         });
         binding.recyclerViewRooms.setAdapter(adapter);
         binding.recyclerViewRooms.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
-
-    }
-
-    private OnValueChangedCallBack onValueChangedCallBack = () -> {
-        adapter.notifyDataSetChanged();
-    };
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        binding = FragmentChatroomsBinding.inflate(inflater);
 
         return binding.getRoot();
+    }
+
+    public void loadCreateRoom() {
+        Intent intent = new Intent(getActivity(), ChatCreateRoomActivity.class);
+        intent.putParcelableArrayListExtra("friends", (ArrayList)mainViewModel.getFriends());
+        startActivity(intent);
     }
 }

@@ -1,9 +1,11 @@
 package com.dgsw.realnamechatting.chat;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,8 +59,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     private void setChatTextAlignment(ChatViewHolder holder, int textAlignment) {
-        holder.name.setTextAlignment(textAlignment);
-        holder.msg.setTextAlignment(textAlignment);
+//        holder.name.setTextAlignment(textAlignment);
+//        holder.msg.setTextAlignment(textAlignment);
+        holder.layout.setGravity(Gravity.RIGHT);
     }
 
     @Override
@@ -75,11 +78,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         public TextView name;
         public TextView msg;
+        public LinearLayout layout;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.chat_textViewName);
             msg = itemView.findViewById(R.id.chat_textViewMsg);
+            layout = itemView.findViewById(R.id.chat_LinearLayout);
         }
     }
 

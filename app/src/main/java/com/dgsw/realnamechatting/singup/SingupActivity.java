@@ -43,8 +43,8 @@ public class SingupActivity extends AppCompatActivity {
     private EditText phone;
     private Button singup;
 
-    ActivitySingupBinding binding;
-    IamportClient client;
+    private ActivitySingupBinding binding;
+//    IamportClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,30 +130,34 @@ public class SingupActivity extends AppCompatActivity {
         phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
-    private void isEmail() {
-        if(email.getText().toString().isEmpty()) {
+    private void isEmail(String email) {
+        if(email.isEmpty()) {
 
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
-
-        }
-    }
-
-    private void isPassword() {
-        if(password.getText().toString().isEmpty()) {
-
-        } else if (!PASSWORD_PATTERN.matcher(password.getText().toString()).matches()) {
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
         }
     }
 
-    private void isName() {
-        if(name.getText().toString().isEmpty()) {
+    private void isPassword(String password) {
+        if(password.isEmpty()) {
 
-        } else if(!NAME_PATTERN.matcher(name.getText().toString()).matches()) {
+        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
 
         }
     }
 
+    private void isName(String name) {
+        if(name.isEmpty()) {
+
+        } else if(!NAME_PATTERN.matcher(name).matches()) {
+
+        }
+    }
+
+    /***
+     * 사용안하는 함수 - 아임포트 연동 실패
+     */
+    /*
     private void getUserToken() {
         try {
             IamportResponse<AccessToken> auth = client.getAuth();
@@ -173,4 +177,5 @@ public class SingupActivity extends AppCompatActivity {
             //서버 연결 실패
         }
     }
+    */
 }

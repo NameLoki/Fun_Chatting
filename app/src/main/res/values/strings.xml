@@ -20,4 +20,6 @@
     <string name="title_friend">친구</string>
     <string name="title_chat_rooms">채팅목록</string>
     <string name="title_setting">설정</string>
+    <string name="rooms_default_name">채팅방이름</string>
+    <string name="rooms_default_message">채팅방 메세지</string>
 </resources>

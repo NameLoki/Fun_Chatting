@@ -46,8 +46,8 @@ public class MainViewModel extends ViewModel {
         if(firebaseUser != null) {
             firebaseManager.getUserInfo(firebaseUser.getUid(), new OnValueEventImplListener((dataSnapshot) -> {
                 user.setValue(dataSnapshot.getValue(User.class));
-                firebaseManager.loadFriend(friends);
-                firebaseManager.loadChatRooms(rooms);
+                firebaseManager.loadFriend(friends, getOnValueChangedCallBack());
+                firebaseManager.loadChatRooms(rooms, getOnValueChangedCallBack());
             }));
         }
     }

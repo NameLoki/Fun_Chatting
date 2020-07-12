@@ -72,7 +72,6 @@ public class FriendFragment extends Fragment {
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
 
         return binding.getRoot();
     }
@@ -96,7 +95,7 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mainViewModel.setOnValueChangedCallBack(onValueChangedCallBack);
     }
 
     private OnValueChangedCallBack onValueChangedCallBack = () -> {
