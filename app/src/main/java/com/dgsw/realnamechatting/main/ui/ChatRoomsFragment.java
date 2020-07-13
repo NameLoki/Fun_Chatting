@@ -48,6 +48,7 @@ public class ChatRoomsFragment extends Fragment {
             public void onItemClick(ChatRoom chatRoom) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("id", chatRoom.getId());
+                intent.putExtra("name", chatRoom.getName());
                 startActivity(intent);
             }
 
@@ -58,6 +59,10 @@ public class ChatRoomsFragment extends Fragment {
         });
         binding.recyclerViewRooms.setAdapter(adapter);
         binding.recyclerViewRooms.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        binding.floatingActionButton.setOnClickListener(v -> {
+            loadCreateRoom();
+        });
 
         return binding.getRoot();
     }

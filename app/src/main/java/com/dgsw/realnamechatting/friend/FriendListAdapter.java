@@ -1,6 +1,5 @@
 package com.dgsw.realnamechatting.friend;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dgsw.realnamechatting.R;
-import com.dgsw.realnamechatting.chat.ChatAdapter;
-import com.dgsw.realnamechatting.data.ChatRoom;
 import com.dgsw.realnamechatting.data.User;
 
 import java.util.List;
@@ -62,8 +59,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.friend_textViewName);
-            email = itemView.findViewById((R.id.friend_textViewEmail));
+            name = itemView.findViewById(R.id.create_textViewName);
+            email = itemView.findViewById((R.id.create_textViewEmail));
 //            button = itemView.findViewById(R.id.friend_buttonChat);
 
         }

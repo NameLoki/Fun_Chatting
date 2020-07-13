@@ -16,6 +16,7 @@ import com.dgsw.realnamechatting.R;
 import com.dgsw.realnamechatting.data.Chatting;
 import com.dgsw.realnamechatting.data.User;
 import com.dgsw.realnamechatting.manager.FirebaseManager;
+import com.dgsw.realnamechatting.manager.OnValueEventImplListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,21 +24,39 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private List<Chatting> chattings;
-
-    private User user;
     private OnClickChatListener listener;
-    private DatabaseReference roomRef;
-    private FirebaseDatabase database;
+
+    private Map<String, String> userNames;
+    private FirebaseManager firebaseManager;
 
     public ChatAdapter(List<Chatting> chattings, OnClickChatListener listener) {
         this.chattings = chattings;
         this.listener = listener;
+        userNames = new HashMap<>();
+        firebaseManager = FirebaseManager.getInstance();
     }
+
+    private String getUserName(String uid, ChatViewHolder holder) {
+        if(!userNames.containsKey(uid)) {
+            firebaseManager.getUserInfo(uid, new OnValueEventImplListener(new OnValueEventImplListener.OnValueEventCallBackListener() {
+                @Override
+                public void onDataChangeCallBack(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    userNames.put(uid, user.getName());
+                    holder.name.setText(user.getName());
+                }
+            }));
+        }
+        return userNames.get(uid);
+    }
+
 
     @NonNull
     @Override
@@ -54,7 +73,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             setChatTextAlignment(holder, View.TEXT_ALIGNMENT_VIEW_END);
         }
 
-        holder.name.setText(chatting.getUid());
+        holder.name.setText(getUserName(chatting.getUid(), holder));
         holder.msg.setText(chatting.getMessage());
     }
 

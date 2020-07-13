@@ -2,6 +2,7 @@ package com.dgsw.realnamechatting.chat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -15,6 +16,7 @@ import com.dgsw.realnamechatting.data.User;
 import com.dgsw.realnamechatting.databinding.ActivityChatBinding;
 import com.dgsw.realnamechatting.login.LoginActivity;
 import com.dgsw.realnamechatting.main.MainViewModel;
+import com.dgsw.realnamechatting.manager.FirebaseManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -38,13 +40,13 @@ public class ChatActivity extends AppCompatActivity {
     private List<Chatting> chattings;
 
     private String roomId;
+    private String roomName;
 
     private User user;
-    private FirebaseUser firebaseUser;
+    private FirebaseManager firebaseManager;
 
     private ChatAdapter adapter;
     private DatabaseReference roomRef;
-    private FirebaseDatabase database;
 
 
     @Override
@@ -60,9 +62,12 @@ public class ChatActivity extends AppCompatActivity {
 
     private void init() {
 
-//        user = MainViewModel.getUser().getValue();
-
         this.roomId = getIntent().getStringExtra("id");
+        this.roomName = getIntent().getStringExtra("name");
+
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle(roomName);
+
         chattings = new ArrayList<>();
 
         adapter = new ChatAdapter(chattings, null);
@@ -70,12 +75,9 @@ public class ChatActivity extends AppCompatActivity {
         binding.chatRecyclerView.setAdapter(adapter);
         binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseManager = FirebaseManager.getInstance();
 
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference myInfo = database.getReference("users/" + firebaseUser.getUid() + "/info");
-
-        roomRef = database.getReference("rooms/" + roomId + "/chattings");
+        roomRef = firebaseManager.getDBReference("rooms/" + roomId + "/chattings");
 
         binding.chatButtonSend.setOnClickListener(v -> {
             String msg = binding.chatEditTextMessage.getText().toString();
@@ -83,14 +85,14 @@ public class ChatActivity extends AppCompatActivity {
             if(!msg.isEmpty()) {
                 Chatting chatting = new Chatting();
                 chatting.setMessage(msg);
-                chatting.setUid(firebaseUser.getUid());
+                chatting.setUid(user.getUid());
 //                roomRef.child(LocalDateTime.now().toString()).setValue(chatting);
                 roomRef.push().setValue(chatting);
                 binding.chatEditTextMessage.setText("");
             }
         });
 
-        myInfo.addValueEventListener(new ValueEventListener() {
+        firebaseManager.getUserInfo(firebaseManager.getLoginUser().getUid() , new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);

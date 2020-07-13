@@ -1,6 +1,7 @@
 package com.dgsw.realnamechatting.chat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 
@@ -14,14 +15,38 @@ import java.util.List;
 public class ChatCreateRoomActivity extends AppCompatActivity {
 
     private ActivityChatCreateRoomBinding binding;
+    private List<User> friends;
+
+    private ChatCreateAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatCreateRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        init();
+    }
+
+    private void init() {
+        loadFriendList();
+
+        adapter = new ChatCreateAdapter(friends, new ChatCreateAdapter.OnClickChatCreateListener() {
+            @Override
+            public void onItemClick(User user) {
+
+            }
+
+            @Override
+            public void onItemLongClick(User user) {
+
+            }
+        });
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void loadFriendList() {
-        ArrayList<User> friends = getIntent().getParcelableArrayListExtra("friends");
+        friends = getIntent().getParcelableArrayListExtra("friends");
     }
 }
