@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 
 import com.dgsw.realnamechatting.R;
+import com.dgsw.realnamechatting.data.CreateUser;
 import com.dgsw.realnamechatting.data.User;
 import com.dgsw.realnamechatting.databinding.ActivityChatCreateRoomBinding;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class ChatCreateRoomActivity extends AppCompatActivity {
 
     private ActivityChatCreateRoomBinding binding;
-    private List<User> friends;
+    private List<CreateUser> friends;
 
     private ChatCreateAdapter adapter;
     @Override

@@ -11,16 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dgsw.realnamechatting.R;
+import com.dgsw.realnamechatting.data.CreateUser;
 import com.dgsw.realnamechatting.data.User;
 
 import java.util.List;
 
 public class ChatCreateAdapter extends RecyclerView.Adapter<ChatCreateAdapter.ChatCreateViewHolder> {
 
-    private List<User> friends;
+    private List<CreateUser> friends;
     private OnClickChatCreateListener onClickChatCreateListener;
 
-    public ChatCreateAdapter(List<User> friends, OnClickChatCreateListener onClickChatCreateListener) {
+    public ChatCreateAdapter(List<CreateUser> friends, OnClickChatCreateListener onClickChatCreateListener) {
         this.friends = friends;
         this.onClickChatCreateListener = onClickChatCreateListener;
     }

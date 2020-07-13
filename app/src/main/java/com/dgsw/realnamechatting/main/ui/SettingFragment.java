@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.dgsw.realnamechatting.data.User;
 import com.dgsw.realnamechatting.databinding.FragmentFriendBinding;
 import com.dgsw.realnamechatting.databinding.FragmentSettingBinding;
 import com.dgsw.realnamechatting.login.LoginActivity;
@@ -27,7 +28,13 @@ public class SettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         binding = FragmentSettingBinding.inflate(inflater);
-
+        mainViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                binding.textViewName.setText(user.getName());
+                binding.textViewEmail.setText(user.getEmail());
+            }
+        });
         return binding.getRoot();
     }
 

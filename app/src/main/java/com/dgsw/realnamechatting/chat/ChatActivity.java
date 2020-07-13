@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import java.util.List;
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
+    private LinearLayoutManager lm;
 
     private List<Chatting> chattings;
 
@@ -48,7 +50,6 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
     private DatabaseReference roomRef;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         init();
+        downScroll();
     }
 
     private void init() {
@@ -73,7 +75,8 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new ChatAdapter(chattings, null);
 
         binding.chatRecyclerView.setAdapter(adapter);
-        binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        lm = new LinearLayoutManager(this);
+        binding.chatRecyclerView.setLayoutManager(lm);
 
         firebaseManager = FirebaseManager.getInstance();
 
@@ -83,12 +86,13 @@ public class ChatActivity extends AppCompatActivity {
             String msg = binding.chatEditTextMessage.getText().toString();
 
             if(!msg.isEmpty()) {
-                Chatting chatting = new Chatting();
-                chatting.setMessage(msg);
-                chatting.setUid(user.getUid());
-//                roomRef.child(LocalDateTime.now().toString()).setValue(chatting);
-                roomRef.push().setValue(chatting);
-                binding.chatEditTextMessage.setText("");
+                addChat(msg);
+            }
+        });
+
+        binding.chatRecyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if(bottom < oldBottom) {
+                lm.smoothScrollToPosition(binding.chatRecyclerView, null, adapter.getItemCount());
             }
         });
 
@@ -109,6 +113,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Chatting chatting = dataSnapshot.getValue(Chatting.class);
                 adapter.addChatting(chatting);
+                downScroll();
             }
 
             @Override
@@ -131,6 +136,19 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void downScroll() {
+        binding.chatRecyclerView.scrollToPosition(chattings.size() - 1);
+    }
+
+    private void addChat(String msg) {
+        Chatting chatting = new Chatting();
+        chatting.setMessage(msg);
+        chatting.setUid(user.getUid());
+//                roomRef.child(LocalDateTime.now().toString()).setValue(chatting);
+        roomRef.push().setValue(chatting);
+        binding.chatEditTextMessage.setText("");
     }
 }
 

@@ -45,6 +45,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 //        holder.button.setOnClickListener(v -> {
 //            this.onClickFriendListener.onFriendClick(user);
 //        });
+        holder.button.setOnClickListener(v -> {
+            onClickFriendListener.onFriendClick(user);
+        });
     }
 
     @Override
@@ -61,8 +64,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             super(itemView);
             name = itemView.findViewById(R.id.create_textViewName);
             email = itemView.findViewById((R.id.create_textViewEmail));
-//            button = itemView.findViewById(R.id.friend_buttonChat);
-
+            button = itemView.findViewById(R.id.button_test);
         }
     }
 

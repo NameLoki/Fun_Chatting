@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +47,7 @@ public class FriendFragment extends Fragment {
         mainViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                binding.textHome.setText(user.getName());
+//                binding.textHome.setText(user.getName());
             }
         });
         mainViewModel.getFriendCount().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -64,9 +65,10 @@ public class FriendFragment extends Fragment {
                 DatabaseReference chatRef =  firebaseManager.getDBReference("rooms");
                 String key = chatRef.push().getKey().toString();
                 DatabaseReference myRef = firebaseManager.getDBReference("users/" + mainViewModel.getUser().getValue().getUid() + "/rooms/" + key);
-                myRef.setValue("sole");
+                myRef.setValue("테스트룸" + key);
                 DatabaseReference friendRef = firebaseManager.getDBReference("users/" + user.getUid() + "/rooms/" + key);
-                friendRef.setValue("sole");
+                friendRef.setValue("테스트룸" + key);
+                Toast.makeText(getActivity(), "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
